@@ -1,0 +1,13 @@
+[package]
+name = "div"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix-web = "3"
+actix-web-opentelemetry = { git = "https://github.com/lily-mara/actix-web-opentelemetry", branch = "opentelemetry-0.14" }
+serde = { version = "1", features = ["derive"] }
+tracing = "0.1"
+tracing-batteries = { path = "../tracing-batteries" }

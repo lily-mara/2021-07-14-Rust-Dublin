@@ -1,0 +1,13 @@
+[package]
+name = "calculator"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+actix-web = "3"
+actix-web-opentelemetry = { git = "https://github.com/lily-mara/actix-web-opentelemetry", branch = "opentelemetry-0.14" }
+serde = { version = "1", features = ["derive"] }
+tracing = "0.1"
+reqwest = { version = "0.11", features = ["json"] }
+tracing-batteries = { path = "../tracing-batteries" }
+services = { path = "../services" }

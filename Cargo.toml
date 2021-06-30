@@ -1,0 +1,10 @@
+[workspace]
+members = [
+    "add",
+    "calculator",
+    "div",
+    "mul",
+    "services",
+    "sub",
+    "tracing-batteries",
+]
