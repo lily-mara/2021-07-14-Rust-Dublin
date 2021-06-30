@@ -3,12 +3,6 @@ use std::fmt::{Display, Formatter};
 
 use actix_web::{web, App, Error, HttpServer, ResponseError};
 use actix_web_opentelemetry::RequestTracing;
-use serde::Deserialize;
-
-#[derive(Deserialize, Debug)]
-struct Equation {
-    add: Vec<i64>,
-}
 
 #[derive(Debug)]
 struct RequestError(String);
