@@ -1,0 +1,7 @@
+#!/bin/sh
+
+temp_file=$(mktemp)
+curl -L -o "${temp_file}" https://github.com/watchexec/cargo-watch/releases/download/v7.8.0/cargo-watch-v7.8.0-x86_64-unknown-linux-gnu.deb
+dpkg -i "${temp_file}"
+
+cargo watch -w . -w ../services -x run

@@ -1,11 +1,89 @@
-version: "3.1"
 services:
-  jaeger:
-    image: "jaegertracing/all-in-one:1.23"
+  add:
+    entrypoint: /code/entrypoint
+    environment:
+      CARGO_HOME: /cargo-home
+      CARGO_TARGET_DIR: /cargo-target
+      OTEL_EXPORTER_JAEGER_AGENT_HOST: jaeger
+      OTEL_EXPORTER_JAEGER_AGENT_PORT: "6831"
+    image: rust:1.53
+    volumes:
+      - ./:/code
+      - add_target:/cargo-target
+      - add_home:/cargo-home
+    working_dir: /code/add
+  calculator:
+    entrypoint: /code/entrypoint
+    environment:
+      CARGO_HOME: /cargo-home
+      CARGO_TARGET_DIR: /cargo-target
+      OTEL_EXPORTER_JAEGER_AGENT_HOST: jaeger
+      OTEL_EXPORTER_JAEGER_AGENT_PORT: "6831"
+    image: rust:1.53
     ports:
-      - "6831:6831/udp"
-      - "6832:6832/udp"
-      - "5778:5778"
-      - "16686:16686"
-      - "14268:14268"
-      - "14250:14250"
+      - 8080:80
+    volumes:
+      - ./:/code
+      - calculator_target:/cargo-target
+      - calculator_home:/cargo-home
+    working_dir: /code/calculator
+  div:
+    entrypoint: /code/entrypoint
+    environment:
+      CARGO_HOME: /cargo-home
+      CARGO_TARGET_DIR: /cargo-target
+      OTEL_EXPORTER_JAEGER_AGENT_HOST: jaeger
+      OTEL_EXPORTER_JAEGER_AGENT_PORT: "6831"
+    image: rust:1.53
+    volumes:
+      - ./:/code
+      - div_target:/cargo-target
+      - div_home:/cargo-home
+    working_dir: /code/div
+  jaeger:
+    image: jaegertracing/all-in-one:1.23
+    ports:
+      - 6831:6831/udp
+      - 6832:6832/udp
+      - 5778:5778
+      - 16686:16686
+      - 14268:14268
+      - 14250:14250
+  mul:
+    entrypoint: /code/entrypoint
+    environment:
+      CARGO_HOME: /cargo-home
+      CARGO_TARGET_DIR: /cargo-target
+      OTEL_EXPORTER_JAEGER_AGENT_HOST: jaeger
+      OTEL_EXPORTER_JAEGER_AGENT_PORT: "6831"
+    image: rust:1.53
+    volumes:
+      - ./:/code
+      - mul_target:/cargo-target
+      - mul_home:/cargo-home
+    working_dir: /code/mul
+  sub:
+    entrypoint: /code/entrypoint
+    environment:
+      CARGO_HOME: /cargo-home
+      CARGO_TARGET_DIR: /cargo-target
+      OTEL_EXPORTER_JAEGER_AGENT_HOST: jaeger
+      OTEL_EXPORTER_JAEGER_AGENT_PORT: "6831"
+    image: rust:1.53
+    volumes:
+      - ./:/code
+      - sub_target:/cargo-target
+      - sub_home:/cargo-home
+    working_dir: /code/sub
+version: "3.1"
+volumes:
+  add_home: {}
+  add_target: {}
+  calculator_home: {}
+  calculator_target: {}
+  div_home: {}
+  div_target: {}
+  mul_home: {}
+  mul_target: {}
+  sub_home: {}
+  sub_target: {}

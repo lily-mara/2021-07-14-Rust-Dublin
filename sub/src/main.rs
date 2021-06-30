@@ -11,7 +11,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(RequestTracing::new())
             .service(web::resource("/sub").to(sub))
     })
-    .bind("127.0.0.1:4040")?
+    .bind("0.0.0.0:80")?
     .run()
     .await?;
 
