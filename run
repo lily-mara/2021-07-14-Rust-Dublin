@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if hash jsonnet; then
+    jsonnetfmt -i docker-compose.jsonnet
+fi
+
+if hash jsonnet && hash yq; then
+    jsonnet docker-compose.jsonnet | yq e -P - > docker-compose.yml
+fi
+
+docker-compose up -d
+docker-compose logs -f

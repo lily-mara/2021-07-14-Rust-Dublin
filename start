@@ -1,6 +1,0 @@
-#!/bin/sh
-
-jsonnetfmt -i docker-compose.jsonnet
-jsonnet docker-compose.jsonnet | yq e -P - > docker-compose.yml
-docker-compose up -d
-docker-compose logs -f
