@@ -28,12 +28,8 @@ local serviceContainers = {
     jaeger: {
       image: 'jaegertracing/all-in-one:1.23',
       ports: [
-        '6831:6831/udp',
-        '6832:6832/udp',
         '5778:5778',
         '16686:16686',
-        '14268:14268',
-        '14250:14250',
       ],
     },
   } + serviceContainers,
