@@ -11,7 +11,7 @@ use opentelemetry::{
         trace::{Config, Sampler},
     },
 };
-use tracing_subscriber::prelude::*;
+use tracing_subscriber::layer::SubscriberExt;
 
 fn init_tracing(service_name: &str) {
     let tracer = opentelemetry_jaeger::new_pipeline()
