@@ -10,10 +10,3 @@ actix-http = "3.0.0-beta.8"
 awc = "3.0.0-beta.7"
 actix-service = "2"
 thiserror = "1"
-# Dependencies to add
-actix-web-opentelemetry = "0.11.0-beta.4"
-opentelemetry = { version = "0.15", features = ["trace"] }
-opentelemetry-jaeger = "0.14"
-tracing-opentelemetry = "0.14"
-tracing-subscriber = "0.2"
-tracing = "0.1"

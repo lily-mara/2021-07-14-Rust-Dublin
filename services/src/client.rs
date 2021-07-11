@@ -1,5 +1,4 @@
 use actix_web::ResponseError;
-use actix_web_opentelemetry::ClientExt;
 use awc::Client;
 
 #[derive(thiserror::Error, Debug)]
@@ -52,7 +51,6 @@ impl CalculationClient {
         let result = self
             .client
             .post(url)
-            .trace_request()
             .send_json(&values)
             .await?
             .json()
