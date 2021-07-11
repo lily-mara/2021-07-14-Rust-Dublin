@@ -1,24 +1,14 @@
+use services::client::CalculationClient;
 use std::collections::VecDeque;
-use std::fmt::{Display, Formatter};
 
-use actix_web::{web, App, Error, HttpServer, ResponseError};
-use actix_web_opentelemetry::RequestTracing;
+use actix_web::{web, App, Error, ResponseError};
 
 #[derive(Debug)]
 struct RequestError(String);
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    tracing_batteries::init("calculator");
-
-    HttpServer::new(|| {
-        App::new()
-            .wrap(RequestTracing::new())
-            .service(web::resource("/calculate").to(calculate))
-    })
-    .bind("0.0.0.0:80")?
-    .run()
-    .await?;
+    services::server::run(|| App::new().service(web::resource("/calculate").to(calculate))).await?;
 
     Ok(())
 }
@@ -29,30 +19,19 @@ async fn calculate(equation: web::Json<String>) -> Result<web::Json<i64>, Error>
     Ok(web::Json(result))
 }
 
-#[derive(Debug)]
+#[derive(Debug, thiserror::Error)]
 enum RpnError {
+    #[error("Not a valid number or operator")]
     InvalidNumber,
-    PopFromEmptyStack,
-    NetworkError(Error),
-}
 
-impl From<Error> for RpnError {
-    fn from(err: Error) -> Self {
-        Self::NetworkError(err)
-    }
+    #[error("Tried to operate on an empty stack")]
+    PopFromEmptyStack,
+
+    #[error("Network error")]
+    ClientError(#[from] services::client::Error),
 }
 
 impl ResponseError for RpnError {}
-
-impl Display for RpnError {
-    fn fmt(&self, f: &mut Formatter) -> std::fmt::Result {
-        match self {
-            RpnError::InvalidNumber => write!(f, "Not a valid number or operator"),
-            RpnError::PopFromEmptyStack => write!(f, "Tried to operate on empty stack"),
-            RpnError::NetworkError(e) => write!(f, "Network error: {}", e),
-        }
-    }
-}
 
 #[derive(Debug)]
 struct RpnStack {
@@ -80,7 +59,7 @@ impl RpnStack {
 
 async fn evaluate(problem: &str) -> Result<i64, RpnError> {
     let mut stack = RpnStack::new();
-    let services = services::Services::new();
+    let services = CalculationClient::new();
 
     for term in problem.trim().split(' ') {
         match term {

@@ -8,5 +8,4 @@ if hash jsonnet && hash yq; then
     jsonnet docker-compose.jsonnet | yq e -P - > docker-compose.yml
 fi
 
-docker-compose up -d
-docker-compose logs -f
+docker-compose up

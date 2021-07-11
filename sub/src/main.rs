@@ -1,29 +1,19 @@
-use actix_web::{web, App, Error, HttpServer};
-use actix_web_opentelemetry::RequestTracing;
-use services::Services;
+use actix_web::{web, App, Error};
+use services::client::CalculationClient;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    tracing_batteries::init("sub");
-
-    HttpServer::new(|| {
-        App::new()
-            .wrap(RequestTracing::new())
-            .service(web::resource("/sub").to(sub))
-    })
-    .bind("0.0.0.0:80")?
-    .run()
-    .await?;
+    services::server::run(|| App::new().service(web::resource("/sub").to(sub))).await?;
 
     Ok(())
 }
 
 async fn sub(values: web::Json<Vec<i64>>) -> Result<web::Json<i64>, Error> {
     let mut total = values[0];
-    let services = Services::new();
+    let client = CalculationClient::new();
 
     for v in values.iter().skip(1) {
-        total = services.add(total, -v).await?;
+        total = client.add(total, -v).await?;
     }
 
     Ok(web::Json(total))

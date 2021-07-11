@@ -1,18 +1,8 @@
-use actix_web::{web, App, HttpServer};
-use actix_web_opentelemetry::RequestTracing;
+use actix_web::{web, App};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    tracing_batteries::init("add");
-
-    HttpServer::new(|| {
-        App::new()
-            .wrap(RequestTracing::new())
-            .service(web::resource("/add").to(add))
-    })
-    .bind("0.0.0.0:80")?
-    .run()
-    .await?;
+    services::server::run(|| App::new().service(web::resource("/add").to(add))).await?;
 
     Ok(())
 }

@@ -1,26 +1,38 @@
-local rustMicroservice(name) = {
+local rustMicroservice(service) = {
   image: 'rust:1.53',
   entrypoint: '/code/entrypoint',
-  working_dir: '/code/%s' % name,
+  working_dir: '/code/%s' % service.name,
   volumes: [
     './:/code',
-    '%s_target:/cargo-target' % name,
-    '%s_home:/cargo-home' % name,
+    '%s_target:/cargo-target' % service.name,
+    '%s_home:/cargo-home' % service.name,
+  ],
+  ports: [
+    '%s:80' % service.hostPort,
   ],
   environment: {
     CARGO_TARGET_DIR: '/cargo-target',
     CARGO_HOME: '/cargo-home',
     OTEL_EXPORTER_JAEGER_AGENT_HOST: 'jaeger',
     OTEL_EXPORTER_JAEGER_AGENT_PORT: '6831',
+    OTEL_EXPORTER_SERVICE_NAME: service.name,
   },
 };
 
-local serviceNames = ['calculator', 'add', 'sub', 'mul', 'div'];
+local services = [
+  { name: 'calculator', hostPort: '8080' },
+  { name: 'add', hostPort: '8081' },
+  { name: 'sub', hostPort: '8082' },
+  { name: 'mul', hostPort: '8083' },
+  { name: 'div', hostPort: '8084' },
+];
+
+local serviceNames = [i.name for i in services];
 
 local serviceContainers = {
-  [i]: rustMicroservice(i)
-  for i in serviceNames
-} + { calculator+: { ports: ['8080:80'] } };
+  [i.name]: rustMicroservice(i)
+  for i in services
+};
 
 {
   version: '3.1',
