@@ -8,6 +8,7 @@ async fn main() -> std::io::Result<()> {
     Ok(())
 }
 
+#[tracing::instrument]
 async fn mul(values: web::Json<Vec<i64>>) -> Result<web::Json<i64>, Error> {
     let x = values[0];
     let y = values[1].abs();
@@ -15,9 +16,13 @@ async fn mul(values: web::Json<Vec<i64>>) -> Result<web::Json<i64>, Error> {
     let client = CalculationClient::new();
 
     let mut total = x;
-    for _ in 0..y {
+    for _ in 1..y {
+        let y = total;
         total = client.add(total, x).await?;
+        tracing::info!(x, y, total, "add result");
     }
+
+    tracing::info!(x, y, total, "multiplication result");
 
     Ok(web::Json(total))
 }
