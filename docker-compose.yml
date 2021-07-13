@@ -7,6 +7,7 @@ services:
       OTEL_EXPORTER_JAEGER_AGENT_HOST: jaeger
       OTEL_EXPORTER_JAEGER_AGENT_PORT: "6831"
       OTEL_EXPORTER_SERVICE_NAME: add
+      RUST_LOG: info
     image: rust:1.53
     ports:
       - 8081:80
@@ -23,6 +24,7 @@ services:
       OTEL_EXPORTER_JAEGER_AGENT_HOST: jaeger
       OTEL_EXPORTER_JAEGER_AGENT_PORT: "6831"
       OTEL_EXPORTER_SERVICE_NAME: calculator
+      RUST_LOG: info
     image: rust:1.53
     ports:
       - 8080:80
@@ -39,6 +41,7 @@ services:
       OTEL_EXPORTER_JAEGER_AGENT_HOST: jaeger
       OTEL_EXPORTER_JAEGER_AGENT_PORT: "6831"
       OTEL_EXPORTER_SERVICE_NAME: div
+      RUST_LOG: info
     image: rust:1.53
     ports:
       - 8084:80
@@ -60,6 +63,7 @@ services:
       OTEL_EXPORTER_JAEGER_AGENT_HOST: jaeger
       OTEL_EXPORTER_JAEGER_AGENT_PORT: "6831"
       OTEL_EXPORTER_SERVICE_NAME: mul
+      RUST_LOG: info
     image: rust:1.53
     ports:
       - 8083:80
@@ -76,6 +80,7 @@ services:
       OTEL_EXPORTER_JAEGER_AGENT_HOST: jaeger
       OTEL_EXPORTER_JAEGER_AGENT_PORT: "6831"
       OTEL_EXPORTER_SERVICE_NAME: sub
+      RUST_LOG: info
     image: rust:1.53
     ports:
       - 8082:80

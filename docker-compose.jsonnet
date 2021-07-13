@@ -13,6 +13,7 @@ local rustMicroservice(service) = {
   environment: {
     CARGO_TARGET_DIR: '/cargo-target',
     CARGO_HOME: '/cargo-home',
+    RUST_LOG: 'info',
     OTEL_EXPORTER_JAEGER_AGENT_HOST: 'jaeger',
     OTEL_EXPORTER_JAEGER_AGENT_PORT: '6831',
     OTEL_EXPORTER_SERVICE_NAME: service.name,
